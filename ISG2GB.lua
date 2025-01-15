@@ -39,6 +39,49 @@ end)
 local Section = Window:NewSection("Segment")
 
 Section:CreateButton("Show Wrong Segment", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/ZDgv3hDW"))()
+    local segmentSystem = workspace:FindFirstChild("segmentSystem")
+if not segmentSystem then
+    warn("segmentSystem not found in workspace.")
+    return
+end
+
+local segments = segmentSystem:FindFirstChild("Segments")
+if not segments then
+    warn("Segments not found in segmentSystem.")
+    return
+end
+
+-- Counter for segments with changed colors
+local changedSegmentCount = 0
+
+-- Iterate through each segment
+for _, segment in ipairs(segments:GetChildren()) do
+    if segment:IsA("Model") then -- Ensure it's a model
+        local folder = segment:FindFirstChild("Folder")
+        if folder then
+            -- Get all children in the folder
+            local parts = folder:GetChildren()
+            local segmentChanged = false -- Track if any part in this segment was changed
+            for _, part in ipairs(parts) do
+                if part:IsA("Part") and part:FindFirstChild("breakable") then
+                    -- Check if the breakable property is true
+                    if part.breakable.Value == true then
+                        -- Change the color to yellow
+                        part.BrickColor = BrickColor.new("Bright yellow")
+                        segmentChanged = true -- Mark that this segment has changed
+                    end
+                end
+            end
+            -- If any part in this segment was changed, increment the counter
+            if segmentChanged then
+                changedSegmentCount = changedSegmentCount + 1
+            end
+        end
+    end
+end
+
+-- Print the total number of segments that had their parts changed
+print("Total segments with changed colors: " .. changedSegmentCount)
+end)
         end)
 
