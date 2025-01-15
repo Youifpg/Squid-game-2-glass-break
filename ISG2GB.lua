@@ -8,5 +8,6 @@ local Window = Library:NewWindow("Arbix Hub |" game.name)
 local Section = Window:NewSection("Segment")
 
 Section:CreateButton("Show Wrong Segment", function()
-    
+    loadstring(game:HttpGet("https://pastebin.com/raw/ZDgv3hDW"))()
         end)
+
